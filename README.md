@@ -66,7 +66,7 @@ AIRFLOW_PASSWORD="your-password"
 1. Create a new Slack app at [api.slack.com](https://api.slack.com/apps)
 2. Enable Socket Mode and generate App-Level Token
 3. Add Bot Token Scopes:
-   - `messages:channel`
+   - `messages:channels`
 4. Install the app to your workspace
 5. Copy the Bot User OAuth Token and App-Level Token to your `.env` file
 
@@ -113,7 +113,7 @@ python airflow_mcp_client/client.py
 ### Slack Bot Permissions
 
 Ensure your Slack bot has the following OAuth scopes:
-- `messages:channel`
+- `messages:channels`
 
 ### Airflow Requirements
 
