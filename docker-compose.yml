@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # MCP Server
+  mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: airflow-mcp-server
+    command: python airflow_mcp_server/server.py
+    environment:
+      - AIRFLOW_BASE_URL=${AIRFLOW_BASE_URL}
+      - AIRFLOW_USERNAME=${AIRFLOW_USERNAME}
+      - AIRFLOW_PASSWORD=${AIRFLOW_PASSWORD}
+    volumes:
+      - .:/app
+    networks:
+      - slack-bot-network
+
+  # Slack Bot
+  slack-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: slack-bot-app
+    command: python slack_integration_kit/chat_int.py
+    environment:
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - SLACK_APP_TOKEN=${SLACK_APP_TOKEN}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      - AZURE_OPENAI_DEPLOYMENT=${AZURE_OPENAI_DEPLOYMENT}
+      - AIRFLOW_BASE_URL=${AIRFLOW_BASE_URL}
+      - AIRFLOW_USERNAME=${AIRFLOW_USERNAME}
+      - AIRFLOW_PASSWORD=${AIRFLOW_PASSWORD}
+    volumes:
+      - .:/app
+    depends_on:
+      mcp-server:
+        condition: service_started
+    networks:
+      - slack-bot-network
+  mcp-client:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: airflow-mcp-client
+      command: python airflow_mcp_client/client.py
+      environment:
+        - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+        - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+        - AZURE_OPENAI_DEPLOYMENT=${AZURE_OPENAI_DEPLOYMENT}
+      depends_on:
+        mcp-server:
+          condition: service_started
+      volumes:
+        - .:/app
+      networks:
+        - slack-bot-network
+
+networks:
+  slack-bot-network:
+    driver: bridge
+
+volumes:
+  app-data:
