@@ -50,13 +50,13 @@ SLACK_BOT_TOKEN="xoxb-your-bot-token"
 SLACK_APP_TOKEN="xapp-your-app-token"
 
 # Azure OpenAI Configuration
-AZURE_OPENAI_API_KEY="your-api-key"
-AZURE_OPENAI_ENDPOINT="https://your-endpoint.openai.azure.com"
-AZURE_OPENAI_DEPLOYMENT="your-deployment-name"
-AZURE_OPENAI_API_VERSION="2024-10-21"
+OPENAI_API_KEY="your-api-key"
+OPENAI_ENDPOINT="https://your-endpoint.openai.azure.com"
+OPENAI_DEPLOYMENT="your-deployment-name"
+OPENAI_API_VERSION="version_here"
 
 # Airflow Configuration
-AIRFLOW_BASE_URL="https://your-airflow-instance.com/api/v1"
+AIRFLOW_BASE_URL="your-airflow-instance.com/api/v1"
 AIRFLOW_USERNAME="your-username"
 AIRFLOW_PASSWORD="your-password"
 ```
